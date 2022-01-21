@@ -1,0 +1,21 @@
+[OBJ Files]
+v is a vertice. v followed by three numbers, the coordinates.
+f is face, it is the connections of the vertices. In order counter clockwise of vertice.
+
+indexed by one.
+ordering is important because of the right hand rule and normals.
+
+
+[Parser Output]
+In our case, it gives a list of vertices. Arranged by triangle.
+posBuf is a list of triangles. It has groups of three vertices, each a face.
+
+norBuf is a list of normals. One normal for each vertex in a face. Grouped by faces.
+Normals are specified with vn
+obj files require one normal per vertex
+
+texBuf is the texture buffer. Again each piece is split up into three. Texture coordinates are 2d, there are two values for each vertex
+
+
+
+ask about normal
