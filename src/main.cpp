@@ -1,10 +1,15 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <memory>
+#include <algorithm>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
 
 #include "Image.h"
+#include "triangle/Triangle.h"
+#include "image_writer/ImageWriter.h"
 
 // This allows you to skip the `std::` in front of C++ standard library
 // functions. You can also say `using std::cout` to be more selective.
@@ -23,11 +28,20 @@ double RANDOM_COLORS[7][3] = {
 
 int main(int argc, char **argv)
 {
-	if(argc < 2) {
-		cout << "Usage: A1 meshfile" << endl;
+	if(argc < 6) {
+		cout << "Usage: A1 meshfile output width height task_number" << endl;
 		return 0;
 	}
+	// Parameters loaded in the variables
 	string meshName(argv[1]);
+	string output(argv[2]);
+	double width = atof(argv[3]);
+	double height = atof(argv[4]);
+	int task = atoi(argv[5]);
+
+	//initialize image object
+	Image image(width, height);
+
 
 	// Load geometry
 	vector<float> posBuf; // list of vertex positions
@@ -75,6 +89,91 @@ int main(int argc, char **argv)
 		}
 	}
 	cout << "Number of vertices: " << posBuf.size()/3 << endl;
+
+	// vector of triangles
+	vector<Triangle*> tri_list;
+
+	// image writer
+	ImageWriter iw;
+
+	// max and min x and y, to be used for scaling
+	double maxX = posBuf[0];
+	double maxY = posBuf[1];
+	double minX = posBuf[0];
+	double minY = posBuf[1];
+
+
+	// process triangles in the vector into a vector of triangle objects
+	int i = 0;
+	while(i < posBuf.size()) {
+		Vertex v1(posBuf[i], posBuf[i+1], posBuf[i+2]);
+		Vertex v2(posBuf[i+3], posBuf[i+4], posBuf[i+5]);
+		Vertex v3(posBuf[i+6], posBuf[i+7], posBuf[i+8]);
+		Triangle* tri = new Triangle(v1, v2, v3);
+		tri_list.push_back(tri);
+		maxX = max(maxX, tri->maxX());
+		maxY = max(maxY, tri->maxY());
+		minX = min(minX, tri->minX());
+		minY = min(minY, tri->minY());
+		i += 9;
+	}
+
+
+
+
+	// determine the limiting factor and scale
+	double scale = 0;
+	if((maxX - minX) > (maxY - minY)) {
+		// height
+		scale = height / (maxX - minX);
+	} else {
+		// width
+		scale = width / (maxY - minY);
+	}
+
+	// coordinates of the origin used for scaling
+	double origin_x = 0.5*(minX + maxX);
+	double origin_y = 0.5*(minY + maxY);
+
+
+
+
+	// determine offset
+	double offset_x = width/2 - scale*origin_x;
+	double offset_y = height/2 - scale*origin_y;
+
+
+	cout << "scale: " << scale << endl;
+	cout << "+x: " << offset_x << endl;
+	cout << "+y: " << offset_y << endl;
+
+
+	// scales the vertices in the vector
+	for(int i = 0; i < tri_list.size(); i++) {
+		tri_list[i]->scale_vertices(scale, offset_x, offset_y);
+	}
+
+
+
+
+	// sends the image as well as the parameter to process the file
+	switch(task) {
+		case 1:
+			iw.draw_bounding_boxes(image, tri_list);
+			break;
+		default:
+			cout << "failure" << endl;
+	}
+
+
+
+	// cleares the heap memory
 	
+	for(int i = 0; i < tri_list.size(); i++) {
+		delete tri_list[i];
+	}
+
+	// writes the image to the specified output file name
+	image.writeToFile(output);
 	return 0;
 }
