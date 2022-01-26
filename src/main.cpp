@@ -161,6 +161,9 @@ int main(int argc, char **argv)
 		case 1:
 			iw.draw_bounding_boxes(image, tri_list);
 			break;
+		case 2: 
+			iw.draw_triangles(image, tri_list);
+			break;
 		default:
 			cout << "failure" << endl;
 	}

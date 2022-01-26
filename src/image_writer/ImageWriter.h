@@ -8,7 +8,7 @@ class ImageWriter
 {
 	public:
 		void draw_bounding_boxes(Image& im, std::vector<Triangle*> &tri);
-		void draw_triangles();
+		void draw_triangles(Image& im, std::vector<Triangle*> &tri);
 		void interpolate_colors();
 		void vertical_color();
 		void z_buffering();

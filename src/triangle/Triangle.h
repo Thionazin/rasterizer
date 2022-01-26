@@ -14,6 +14,10 @@ class Triangle
 	public:
 		Triangle(Vertex v1, Vertex v2, Vertex v3) : v1(v1), v2(v2), v3(v3) {};
 		void scale_vertices(double scale, double offset_x, double offset_y);
+		double area();
+		double area_a(Vertex p);
+		double area_b(Vertex p);
+		double area_c(Vertex p);
 		double maxX();
 		double maxY();
 		double maxZ();

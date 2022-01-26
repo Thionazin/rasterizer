@@ -33,3 +33,19 @@ double Triangle::maxZ() {
 double Triangle::minZ() {
 	return std::min({v1.z, v2.z, v3.z});
 }
+
+double Triangle::area() {
+	return 0.5*((v2.x - v1.x) * (v3.y - v1.y) - (v3.x - v1.x) * (v2.y - v1.y));
+}
+
+double Triangle::area_a(Vertex p) {
+	return 0.5*((v2.x - p.x) * (v3.y - p.y) - (v3.x - p.x) * (v2.y - p.y));
+}
+
+double Triangle::area_b(Vertex p) {
+	return 0.5*((v3.x - p.x) * (v1.y - p.y) - (v1.x - p.x) * (v3.y - p.y));
+}
+
+double Triangle::area_c(Vertex p) {
+	return 0.5*((v1.x - p.x) * (v2.y - p.y) - (v2.x - p.x) * (v1.y - p.y));
+}
