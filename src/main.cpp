@@ -164,6 +164,9 @@ int main(int argc, char **argv)
 		case 2: 
 			iw.draw_triangles(image, tri_list);
 			break;
+		case 3:
+			iw.interpolate_colors(image, tri_list);
+			break;
 		default:
 			cout << "failure" << endl;
 	}
