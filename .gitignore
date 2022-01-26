@@ -2,3 +2,6 @@
 *.png
 build
 build/
+src/*.out
+src/*.png
+src/*.obj

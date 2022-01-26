@@ -59,3 +59,22 @@ void ImageWriter::interpolate_colors(Image& im, std::vector<Triangle*> &tri) {
 	}
 
 }
+
+
+void ImageWriter::vertical_color(Image& im, std::vector<Triangle*> &tri, double height, double base) {
+	for(int i = 0; i < tri.size(); i++) {
+		for(int r = tri[i]->minX(); r < tri[i]->maxX(); r++) {
+			for(int c = tri[i]->minY(); c < tri[i]->maxY(); c++) {
+				double area = tri[i]->area();
+				Vertex p(r, c, 0);
+				double a = tri[i]->area_a(p) / area;
+				double b = tri[i]->area_b(p) / area;
+				double see = tri[i]->area_c(p) / area;
+				if(a >= 0 && b >= 0 && see >=0) {
+					im.setPixel(r, c, 255*((c-base)/height), 0, 255*(1-((c-base)/height)));
+				}
+				//im.setPixel(r, c, 0, 255, 0);
+			}
+		}
+	}
+}

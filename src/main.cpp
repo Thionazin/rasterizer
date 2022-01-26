@@ -102,7 +102,6 @@ int main(int argc, char **argv)
 	double minX = posBuf[0];
 	double minY = posBuf[1];
 
-
 	// process triangles in the vector into a vector of triangle objects
 	int i = 0;
 	while(i < posBuf.size()) {
@@ -118,9 +117,6 @@ int main(int argc, char **argv)
 		i += 9;
 	}
 
-
-
-
 	// determine the limiting factor and scale
 	double scale = 0;
 	if((maxX - minX) > (maxY - minY)) {
@@ -135,26 +131,22 @@ int main(int argc, char **argv)
 	double origin_x = 0.5*(minX + maxX);
 	double origin_y = 0.5*(minY + maxY);
 
-
-
-
 	// determine offset
 	double offset_x = width/2 - scale*origin_x;
 	double offset_y = height/2 - scale*origin_y;
 
-
 	cout << "scale: " << scale << endl;
 	cout << "+x: " << offset_x << endl;
 	cout << "+y: " << offset_y << endl;
-
 
 	// scales the vertices in the vector
 	for(int i = 0; i < tri_list.size(); i++) {
 		tri_list[i]->scale_vertices(scale, offset_x, offset_y);
 	}
 
-
-
+	// computes the lowest y as well as the height of the object to be used for the vertical scale
+	double height_obj = (maxY*scale) - (minY*scale);
+	double base = minY*scale + offset_y;
 
 	// sends the image as well as the parameter to process the file
 	switch(task) {
@@ -167,14 +159,14 @@ int main(int argc, char **argv)
 		case 3:
 			iw.interpolate_colors(image, tri_list);
 			break;
+		case 4:
+			iw.vertical_color(image, tri_list, height_obj, base);
+			break;
 		default:
 			cout << "failure" << endl;
 	}
 
-
-
 	// cleares the heap memory
-	
 	for(int i = 0; i < tri_list.size(); i++) {
 		delete tri_list[i];
 	}
