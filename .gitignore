@@ -5,3 +5,6 @@ build/
 src/*.out
 src/*.png
 src/*.obj
+quick_notes
+resources/
+resources

@@ -24,6 +24,9 @@ class Triangle
 		double minX();
 		double minY();
 		double minZ();
+        Vertex get_v1() { return v1; }
+        Vertex get_v2() { return v2; }
+        Vertex get_v3() { return v3; }
 
 	private:
 		Vertex v1;

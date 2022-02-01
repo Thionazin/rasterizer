@@ -99,12 +99,13 @@ int main(int argc, char **argv)
 	// max and min x and y, to be used for scaling
 	double maxX = posBuf[0];
 	double maxY = posBuf[1];
+	double maxZ = posBuf[2];
 	double minX = posBuf[0];
 	double minY = posBuf[1];
+	double minZ = posBuf[2];
 
 	// process triangles in the vector into a vector of triangle objects
-	int i = 0;
-	while(i < posBuf.size()) {
+	for(unsigned int i = 0; i < posBuf.size();) {
 		Vertex v1(posBuf[i], posBuf[i+1], posBuf[i+2]);
 		Vertex v2(posBuf[i+3], posBuf[i+4], posBuf[i+5]);
 		Vertex v3(posBuf[i+6], posBuf[i+7], posBuf[i+8]);
@@ -112,8 +113,10 @@ int main(int argc, char **argv)
 		tri_list.push_back(tri);
 		maxX = max(maxX, tri->maxX());
 		maxY = max(maxY, tri->maxY());
+		maxZ = max(maxZ, tri->maxZ());
 		minX = min(minX, tri->minX());
 		minY = min(minY, tri->minY());
+		minZ = min(minZ, tri->minZ());
 		i += 9;
 	}
 
@@ -140,7 +143,7 @@ int main(int argc, char **argv)
 	cout << "+y: " << offset_y << endl;
 
 	// scales the vertices in the vector
-	for(int i = 0; i < tri_list.size(); i++) {
+	for(unsigned int i = 0; i < tri_list.size(); i++) {
 		tri_list[i]->scale_vertices(scale, offset_x, offset_y);
 	}
 
@@ -162,12 +165,15 @@ int main(int argc, char **argv)
 		case 4:
 			iw.vertical_color(image, tri_list, height_obj, base);
 			break;
+		case 5:
+			iw.z_buffering(image, tri_list, maxZ-minZ, minZ, width, height);
+			break;
 		default:
 			cout << "failure" << endl;
 	}
 
 	// cleares the heap memory
-	for(int i = 0; i < tri_list.size(); i++) {
+	for(unsigned int i = 0; i < tri_list.size(); i++) {
 		delete tri_list[i];
 	}
 
