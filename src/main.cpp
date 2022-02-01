@@ -106,9 +106,9 @@ int main(int argc, char **argv)
 
 	// process triangles in the vector into a vector of triangle objects
 	for(unsigned int i = 0; i < posBuf.size();) {
-		Vertex v1(posBuf[i], posBuf[i+1], posBuf[i+2]);
-		Vertex v2(posBuf[i+3], posBuf[i+4], posBuf[i+5]);
-		Vertex v3(posBuf[i+6], posBuf[i+7], posBuf[i+8]);
+		Vertex v1(posBuf[i], posBuf[i+1], posBuf[i+2], norBuf[i], norBuf[i+1], norBuf[i+2]);
+		Vertex v2(posBuf[i+3], posBuf[i+4], posBuf[i+5], norBuf[i+3], norBuf[i+4], norBuf[i+5]);
+		Vertex v3(posBuf[i+6], posBuf[i+7], posBuf[i+8], norBuf[i+6], norBuf[i+7], norBuf[i+8]);
 		Triangle* tri = new Triangle(v1, v2, v3);
 		tri_list.push_back(tri);
 		maxX = max(maxX, tri->maxX());
@@ -167,6 +167,12 @@ int main(int argc, char **argv)
 			break;
 		case 5:
 			iw.z_buffering(image, tri_list, maxZ-minZ, minZ, width, height);
+			break;
+		case 6:
+			iw.normal_coloring(image, tri_list, maxZ-minZ, minZ, width, height);
+			break;
+		case 7:
+			iw.lighting(image, tri_list, maxZ-minZ, minZ, width, height);
 			break;
 		default:
 			cout << "failure" << endl;

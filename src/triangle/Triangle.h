@@ -6,6 +6,10 @@ struct Vertex {
 	double x;
 	double y;
 	double z;
+	double nx;
+	double ny;
+	double nz;
+	Vertex(double x, double y, double z, double nx, double ny, double nz) : x(x), y(y), z(z), nx(nx), ny(ny), nz(nz) {}
 	Vertex(double x, double y, double z) : x(x), y(y), z(z) {}
 };
 

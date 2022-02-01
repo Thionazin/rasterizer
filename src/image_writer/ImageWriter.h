@@ -12,8 +12,8 @@ class ImageWriter
 		void interpolate_colors(Image& im, std::vector<Triangle*> &tri);
 		void vertical_color(Image& im, std::vector<Triangle*> &tri, double height, double base);
 		void z_buffering(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height);
-		void normal_coloring();
-		void simple_lighting();
+		void normal_coloring(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height);
+		void lighting(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height);
 	private:
 		double RANDOM_COLORS[7][3] = {
 			{0.0000,    0.4470,    0.7410},
