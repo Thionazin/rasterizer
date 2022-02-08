@@ -122,13 +122,15 @@ int main(int argc, char **argv)
 
 	// determine the limiting factor and scale
 	double scale = 0;
-	if((maxX - minX) > (maxY - minY)) {
+	if((width / (maxX - minX)) < (height / (maxY - minY))) {
 		// height
-		scale = height / (maxX - minX);
+		scale = width / (maxX - minX);
 	} else {
 		// width
-		scale = width / (maxY - minY);
+		scale = height / (maxY - minY);
 	}
+
+	cout << scale << endl;
 
 	// coordinates of the origin used for scaling
 	double origin_x = 0.5*(minX + maxX);
@@ -137,10 +139,6 @@ int main(int argc, char **argv)
 	// determine offset
 	double offset_x = width/2 - scale*origin_x;
 	double offset_y = height/2 - scale*origin_y;
-
-	cout << "scale: " << scale << endl;
-	cout << "+x: " << offset_x << endl;
-	cout << "+y: " << offset_y << endl;
 
 	// scales the vertices in the vector
 	for(unsigned int i = 0; i < tri_list.size(); i++) {
@@ -166,13 +164,13 @@ int main(int argc, char **argv)
 			iw.vertical_color(image, tri_list, height_obj, base);
 			break;
 		case 5:
-			iw.z_buffering(image, tri_list, maxZ-minZ, minZ, width, height);
+			iw.z_buffering(image, tri_list, maxZ-minZ, minZ, height, width);
 			break;
 		case 6:
-			iw.normal_coloring(image, tri_list, maxZ-minZ, minZ, width, height);
+			iw.normal_coloring(image, tri_list, maxZ-minZ, minZ, height, width);
 			break;
 		case 7:
-			iw.lighting(image, tri_list, maxZ-minZ, minZ, width, height);
+			iw.lighting(image, tri_list, maxZ-minZ, minZ, height, width);
 			break;
 		default:
 			cout << "failure" << endl;

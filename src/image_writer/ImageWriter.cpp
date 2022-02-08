@@ -81,6 +81,7 @@ void ImageWriter::vertical_color(Image& im, std::vector<Triangle*> &tri, double 
 	}
 }
 
+// For these functions, the widths and the heights are reversed, because of the whole deal with c++ array rows and columns being not x and y. In order to get around this and for my own sanity, The array height and array width are the reverse of image height and image width.
 void ImageWriter::z_buffering(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height) {
 	double** z_buff = new double*[height];
 	for(int i = 0; i < height; i++) {
@@ -113,6 +114,7 @@ void ImageWriter::z_buffering(Image& im, std::vector<Triangle*> &tri, double z_r
 }
 
 
+// For these functions, the widths and the heights are reversed, because of the whole deal with c++ array rows and columns being not x and y. In order to get around this and for my own sanity, The array height and array width are the reverse of image height and image width.
 void ImageWriter::normal_coloring(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height) {
 	double** z_buff = new double*[height];
 	for(int i = 0; i < height; i++) {
@@ -146,6 +148,7 @@ void ImageWriter::normal_coloring(Image& im, std::vector<Triangle*> &tri, double
 	delete[] z_buff;
 }
 
+// For these functions, the widths and the heights are reversed, because of the whole deal with c++ array rows and columns being not x and y. In order to get around this and for my own sanity, The array height and array width are the reverse of image height and image width.
 void ImageWriter::lighting(Image& im, std::vector<Triangle*> &tri, double z_range, double z_base, int width, int height) {
 	double** z_buff = new double*[height];
 	for(int i = 0; i < height; i++) {
