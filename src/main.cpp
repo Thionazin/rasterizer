@@ -33,11 +33,36 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	// Parameters loaded in the variables
+	bool parameters_valid = true;
 	string meshName(argv[1]);
+
+	ifstream test_stream(meshName.c_str());
+	if(!test_stream.good()) {
+		parameters_valid = false;
+		cout << "Error, provided file cannot be accessed or does not exist" << endl;
+	}
+
 	string output(argv[2]);
 	double width = atof(argv[3]);
+	if(width < 0) {
+		parameters_valid = false;
+		cout << "Error, invalid width" << endl;
+	}
 	double height = atof(argv[4]);
+	if(height < 0) {
+		parameters_valid = false;
+		cout << "Error, invalid height" << endl;
+	}
 	int task = atoi(argv[5]);
+	if(task < 1 || task > 7) {
+		parameters_valid = false;
+		cout << "Error, invalid task number" << endl;
+	}
+
+	if(!parameters_valid) {
+		cout << "Exiting program, one or more parameters are not valid" << endl;
+		return 0;
+	}
 
 	//initialize image object
 	Image image(width, height);
@@ -88,7 +113,6 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	cout << "Number of vertices: " << posBuf.size()/3 << endl;
 
 	// vector of triangles
 	vector<Triangle*> tri_list;
@@ -130,7 +154,6 @@ int main(int argc, char **argv)
 		scale = height / (maxY - minY);
 	}
 
-	cout << scale << endl;
 
 	// coordinates of the origin used for scaling
 	double origin_x = 0.5*(minX + maxX);
